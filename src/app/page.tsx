@@ -5,7 +5,7 @@ export default function Home() {
     <main className={styles.main}>
       <div>
         <h1 className={styles.h1}>
-          Hello World
+          Hello World mundo sgw
         </h1>
       </div>
     </main>
