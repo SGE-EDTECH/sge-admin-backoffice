@@ -1,1 +1,0 @@
-constantes, como URL DE APIS
