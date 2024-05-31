@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import styles from "./page.module.css";
 import { useEffect } from "react";
 import CustomToastContainer, { showToast } from "@/components/common/toast/customToast";
 
@@ -18,7 +17,7 @@ export default function Home() {
 
 
   return (
-    <main className={styles.main}>
+    <main>
       <div>
         <CustomToastContainer />
       </div>

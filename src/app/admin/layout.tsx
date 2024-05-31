@@ -1,19 +1,21 @@
-import Sidebar from '@/components/common/sidebar/adminSidebar';
-import styles from './layout.module.css';
+import "./globals.css";
 import React from 'react';
+import SidebarF from '@/components/common/sidebar';
 
 
 
 const AdminLayout = ({ children }:{children:React.ReactNode}) => {
   return (
-    <div className={styles.container}>
-      <div className={styles.main}>
-        <Sidebar />
-        <main className={styles.content}>
-          {children}
-        </main>
-      </div>
-    </div>
+    <html lang="pt-br">
+      <body>
+        <div className="flex h-screen w-full bg-gray-100">
+          <SidebarF />
+          <div className="flex flex-col w-full h-full ml-64 p-4">
+            {children}
+          </div>
+        </div>
+      </body>
+    </html>
   );
 };
 
