@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import { ChevronDown, LucideIcon } from "lucide-react";
+import { IconType } from "react-icons";
 import { usePathname, useRouter } from "next/navigation";
 
 import SubMenuItem from "./sub-item";
@@ -8,7 +9,7 @@ import SubMenuItem from "./sub-item";
 interface ISidebarItem {
   name: string;
   path: string;
-  icon: LucideIcon;
+  icon: LucideIcon | IconType;
   items?: ISubItem[];
 }
 

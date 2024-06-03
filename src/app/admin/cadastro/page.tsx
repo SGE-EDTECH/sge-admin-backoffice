@@ -4,7 +4,7 @@ import React from "react";
 const Page = () => {
   return (
     <div>
-      <h2>Cadastrar algo</h2>
+      <h2>usuarios</h2>
     </div>
   );
 };
