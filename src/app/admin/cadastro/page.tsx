@@ -1,12 +1,13 @@
 "use client";
 import React from "react";
+import CadastrosTable from "@/components/CadastrosTable/CadastrosTable";
 
-const Page = () => {
+const CadastrosPage = () => {
   return (
     <div>
-      <h2>usuarios</h2>
+      <CadastrosTable />
     </div>
   );
 };
 
-export default Page;
+export default CadastrosPage;
