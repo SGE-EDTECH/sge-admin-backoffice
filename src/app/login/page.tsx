@@ -12,8 +12,9 @@ const MyLoginPage = () => {
   const router = useRouter(); // Inicializa o useRouter
 
   const handleLogin = () => {
-    if (username === 'admin@teste.com.br' && password === '12345689') {
-      router.push('/admin'); // Use router.push para redirecionar
+    if (username === 'contato@alandiniz.com.br' && password === '123456789') {
+      router.push('/admin'); 
+      toast.success('Login efetuado com sucesso');
     } else {
       toast.error('Credenciais inválidas');
     }
