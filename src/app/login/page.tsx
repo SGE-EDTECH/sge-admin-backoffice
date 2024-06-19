@@ -1,21 +1,23 @@
 "use client";
-import useIntegration from '@/hooks/useIntegration/useIntegration';
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { useRouter } from 'next/navigation'; // Usando next/navigation para useRouter
+import { useRouter } from 'next/navigation';
+import { login } from '../../hooks/api';
 
 const MyLoginPage = () => {
-  const { post, data } = useIntegration();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter(); // Inicializa o useRouter
+  const router = useRouter();
 
-  const handleLogin = () => {
-    if (username === 'contato@alandiniz.com.br' && password === '123456789') {
-      router.push('/admin'); 
+  const handleLogin = async () => {
+    try {
+      const response = await login(username, password);
+      console.log('Login successful:', response);
+      router.push('/admin');
       toast.success('Login efetuado com sucesso');
-    } else {
+    } catch (error) {
+      console.error('Login failed:', error);
       toast.error('Credenciais inválidas');
     }
   };
@@ -59,7 +61,6 @@ const MyLoginPage = () => {
         >
           Entrar
         </button>
-        <pre>{data && JSON.stringify(data, null, 2)}</pre>
       </div>
       <style jsx>{`
         .background {
@@ -82,7 +83,6 @@ const MyLoginPage = () => {
           max-width: 400px;
           width: 100%;
         }
-        
         .input-group {
           position: relative;
           margin-bottom: 1rem;
