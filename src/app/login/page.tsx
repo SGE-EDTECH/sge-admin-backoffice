@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { login } from '../../hooks/api';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MyLoginPage = () => {
   const [username, setUsername] = useState('');
@@ -10,7 +11,8 @@ const MyLoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
       const response = await login(username, password);
       console.log('Login successful:', response);
@@ -27,40 +29,42 @@ const MyLoginPage = () => {
       <ToastContainer />
       <div className="container">
         <img src="/Logo_64.png" alt="Logo" className="logo" />
-        <div className="input-group">
-          <input 
-            type="text" 
-            placeholder="E-mail" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
-            className="input"
-          />
-        </div>
-        <div className="input-group">
-          <input 
-            type={showPassword ? "text" : "password"} 
-            placeholder="Senha" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            className="input"
-          />
+        <form onSubmit={handleLogin}>
+          <div className="input-group">
+            <input 
+              type="text" 
+              placeholder="E-mail" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              className="input"
+            />
+          </div>
+          <div className="input-group">
+            <input 
+              type={showPassword ? "text" : "password"} 
+              placeholder="Senha" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              className="input"
+            />
+            <button 
+              type="button" 
+              className="toggle-password" 
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? '🙈' : '👁️'}
+            </button>
+          </div>
+          <div className="forgot-password">
+            <a href="#">Esqueci minha senha</a>
+          </div>
           <button 
-            type="button" 
-            className="toggle-password" 
-            onClick={() => setShowPassword(!showPassword)}
+            type="submit"
+            className="button"
           >
-            {showPassword ? '🙈' : '👁️'}
+            Entrar
           </button>
-        </div>
-        <div className="forgot-password">
-          <a href="#">Esqueci minha senha</a>
-        </div>
-        <button 
-          onClick={handleLogin}
-          className="button"
-        >
-          Entrar
-        </button>
+        </form>
       </div>
       <style jsx>{`
         .background {
