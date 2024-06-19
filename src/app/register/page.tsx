@@ -1,33 +1,33 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { login } from '../../hooks/api';
+import { useRouter } from 'next/navigation';
+import { register } from '../../hooks/api';
 import 'react-toastify/dist/ReactToastify.css';
 
-const MyLoginPage = () => {
-  const [username, setUsername] = useState('');
+const RegisterPage = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  useEffect(() => {
-    if (searchParams.get('registered') === 'true') {
-      toast.success('Registro feito com sucesso, favor se logar');
-    }
-  }, [searchParams]);
-
-  const handleLogin = async (e) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error('As senhas não coincidem');
+      return;
+    }
+
     try {
-      const response = await login(username, password);
-      console.log('Login successful:', response);
-      router.push('/admin');
-      toast.success('Login efetuado com sucesso');
+      const roles = [{ name: 'ADMIN', description: 'Administrator role' }];
+      const response = await register({ name, email, password, roles });
+      console.log('Registration successful:', response);
+      router.push('/login?registered=true');
     } catch (error) {
-      console.error('Login failed:', error);
-      toast.error('Credenciais inválidas');
+      console.error('Registration failed:', error);
+      toast.error('Erro ao efetuar cadastro');
     }
   };
 
@@ -36,13 +36,22 @@ const MyLoginPage = () => {
       <ToastContainer />
       <div className="container">
         <img src="/Logo_64.png" alt="Logo" className="logo" />
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleRegister}>
           <div className="input-group">
             <input 
               type="text" 
+              placeholder="Nome" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              className="input"
+            />
+          </div>
+          <div className="input-group">
+            <input 
+              type="email" 
               placeholder="E-mail" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
               className="input"
             />
           </div>
@@ -62,18 +71,31 @@ const MyLoginPage = () => {
               {showPassword ? '🙈' : '👁️'}
             </button>
           </div>
-          <div className="forgot-password">
-            <a href="#">Esqueci minha senha</a>
+          <div className="input-group">
+            <input 
+              type={showPassword ? "text" : "password"} 
+              placeholder="Confirme a Senha" 
+              value={confirmPassword} 
+              onChange={(e) => setConfirmPassword(e.target.value)} 
+              className="input"
+            />
+            <button 
+              type="button" 
+              className="toggle-password" 
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? '🙈' : '👁️'}
+            </button>
           </div>
           <button 
             type="submit"
             className="button"
           >
-            Entrar
+            Registrar
           </button>
         </form>
-        <div className="register-link">
-          <a href="/register">Não tem uma conta? Cadastre-se</a>
+        <div className="login-link">
+          <a href="/login">Já possui uma conta? Faça login</a>
         </div>
       </div>
       <style jsx>{`
@@ -116,13 +138,6 @@ const MyLoginPage = () => {
           border: none;
           cursor: pointer;
         }
-        .forgot-password {
-          margin-bottom: 1rem;
-        }
-        .forgot-password a {
-          color: #0000FF;
-          text-decoration: none;
-        }
         .button {
           background-color: #0000FF;
           color: white;
@@ -132,10 +147,10 @@ const MyLoginPage = () => {
           cursor: pointer;
           width: 100%;
         }
-        .register-link {
+        .login-link {
           margin-top: 1rem;
         }
-        .register-link a {
+        .login-link a {
           color: #0000FF;
           text-decoration: none;
         }
@@ -144,4 +159,4 @@ const MyLoginPage = () => {
   );
 };
 
-export default MyLoginPage;
+export default RegisterPage;

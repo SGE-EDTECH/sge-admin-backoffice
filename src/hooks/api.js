@@ -14,3 +14,13 @@ export const login = async (email, password) => {
     throw error;
   }
 };
+
+export const register = async (userData) => {
+  try {
+    const response = await api.post('/user/create', userData);
+    return response.data;
+  } catch (error) {
+    console.error('API call error:', error);
+    throw error;
+  }
+};
