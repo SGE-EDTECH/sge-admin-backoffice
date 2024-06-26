@@ -13,7 +13,7 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast.error('As senhas não coincidem');
