@@ -2,25 +2,24 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { login } from '../../hooks/api';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
-const MyLoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+const PasswordResetPage = () => {
+  const [email, setEmail] = useState('');
   const router = useRouter();
 
-  const handleLogin = async (e) => {
+  const handlePasswordReset = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await login(username, password);
-      console.log('Login successful:', response);
-      router.push('/admin');
-      toast.success('Login efetuado com sucesso');
+      await axios.post('/api/password-reset', { email });
+
+      toast.success('Um email foi enviado para redefinir sua senha.');
+      router.push('/login');
     } catch (error) {
-      console.error('Login failed:', error);
-      toast.error('Credenciais inválidas');
+      console.error('Password reset failed:', error);
+      toast.error('Erro ao enviar email de redefinição de senha');
     }
   };
 
@@ -29,45 +28,27 @@ const MyLoginPage = () => {
       <ToastContainer />
       <div className="container">
         <img src="/Logo_64.png" alt="Logo" className="logo" />
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handlePasswordReset}>
           <div className="input-group">
             <input 
-              type="text" 
+              type="email" 
               placeholder="E-mail" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
               className="input"
+              required
             />
-          </div>
-          <div className="input-group">
-            <input 
-              type={showPassword ? "text" : "password"} 
-              placeholder="Senha" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              className="input"
-            />
-            <button 
-              type="button" 
-              className="toggle-password" 
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? '🙈' : '👁️'}
-            </button>
-          </div>
-          <div className="forgot-password">
-            <a href="#">Esqueci minha senha</a>
           </div>
           <button 
             type="submit"
             className="button"
           >
-            Entrar
+            Enviar Email de Redefinição
           </button>
-          <div className="register-link">
-            <a href="/register">Registrar</a>
-          </div>
         </form>
+        <div className="login-link">
+          <a href="/login">Voltar para o login</a>
+        </div>
       </div>
       <style jsx>{`
         .background {
@@ -100,22 +81,6 @@ const MyLoginPage = () => {
           border-radius: 4px;
           border: 1px solid #ccc;
         }
-        .toggle-password {
-          position: absolute;
-          top: 50%;
-          right: 1rem;
-          transform: translateY(-50%);
-          background: none;
-          border: none;
-          cursor: pointer;
-        }
-        .forgot-password {
-          margin-bottom: 1rem;
-        }
-        .forgot-password a {
-          color: #0000FF;
-          text-decoration: none;
-        }
         .button {
           background-color: #0000FF;
           color: white;
@@ -125,10 +90,10 @@ const MyLoginPage = () => {
           cursor: pointer;
           width: 100%;
         }
-        .register-link {
+        .login-link {
           margin-top: 1rem;
         }
-        .register-link a {
+        .login-link a {
           color: #0000FF;
           text-decoration: none;
         }
@@ -137,4 +102,4 @@ const MyLoginPage = () => {
   );
 };
 
-export default MyLoginPage;
+export default PasswordResetPage;
